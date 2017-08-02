@@ -9,7 +9,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Objects;
 import java.util.Optional;
 import java.util.stream.Collector;
 import java.util.stream.Collectors;
@@ -33,7 +32,10 @@ public class TestResult implements Serializable, Nameable, Parameterizable, Stat
     protected String description;
     protected String descriptionHtml;
     protected Status status;
-    protected StatusDetails statusDetails = new StatusDetails();
+    protected String statusMessage;
+    protected String statusTrace;
+
+    protected boolean flaky;
 
     //    Execution
     protected List<StageResult> beforeStages = new ArrayList<>();
@@ -119,17 +121,5 @@ public class TestResult implements Serializable, Nameable, Parameterizable, Stat
 
     public void addLabel(final String name, final String value) {
         getLabels().add(new Label().setName(name).setValue(value));
-    }
-
-    public StatusDetails getStatusDetailsSafe() {
-        if (Objects.isNull(getStatusDetails())) {
-            setStatusDetails(new StatusDetails());
-        }
-        return getStatusDetails();
-    }
-
-    public Optional<String> getStatusMessage() {
-        return Optional.ofNullable(getStatusDetails())
-                .map(StatusDetails::getMessage);
     }
 }

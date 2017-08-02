@@ -5,7 +5,6 @@ import io.qameta.allure.core.Configuration;
 import io.qameta.allure.core.ResultsVisitor;
 import io.qameta.allure.entity.Label;
 import io.qameta.allure.entity.Status;
-import io.qameta.allure.entity.StatusDetails;
 import io.qameta.allure.entity.TestResult;
 import io.qameta.allure.entity.Time;
 import org.assertj.core.groups.Tuple;
@@ -54,11 +53,10 @@ public class XunitXmlPluginTest {
     }
 
     @DataPoints
-    public static String[][] input()
-    {
+    public static String[][] input() {
         return new String[][]{
                 {"xunitdata/failed-test.xml", "failed-test.xml",
-                        String.format("%s%n","Assert.True() Failure\\r\\nExpected: True\\r\\nActual:   False")+
+                        String.format("%s%n", "Assert.True() Failure\\r\\nExpected: True\\r\\nActual:   False") +
                                 "test output\\n", "FAILED-TRACE"},
                 {"xunitdata/passed-test.xml", "passed-test.xml", "test output\\n", null}
         };
@@ -134,7 +132,7 @@ public class XunitXmlPluginTest {
                 .hasSize(1)
                 .extracting(TestResult::getFullName)
                 .containsExactlyInAnyOrder(
-                       "Some test"
+                        "Some test"
                 );
     }
 
@@ -151,8 +149,7 @@ public class XunitXmlPluginTest {
 
         assertThat(captor.getAllValues())
                 .hasSize(1)
-                .extracting(TestResult::getStatusDetails)
-                .extracting(StatusDetails::getMessage, StatusDetails::getTrace)
+                .extracting(TestResult::getStatusMessage, TestResult::getStatusTrace)
                 .containsExactlyInAnyOrder(
                         Tuple.tuple(inputs[2], inputs[3])
                 );
